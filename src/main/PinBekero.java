@@ -117,13 +117,13 @@ public class PinBekero extends javax.swing.JFrame {
             btn.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    if (kattDb <= 4) {
+                    if (kattDb < 4) {
                         kattDb++;
                         pin += e.getActionCommand();
-                    } 
-                    if(kattDb == 4) {
-                        chbMutat.setEnabled(true);
-                        JOptionPane.showMessageDialog(rootPane, "Pin mentve!");
+                        if (kattDb == 4) {
+                            chbMutat.setEnabled(true);
+                            JOptionPane.showMessageDialog(rootPane, "Pin mentve!");
+                        }
                     }
                     
                 }
@@ -132,18 +132,15 @@ public class PinBekero extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowOpened
 
     private void chbMutatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chbMutatActionPerformed
-        if(chbMutat.isSelected()){
-            for (int i = 0; i < pin.length(); i++) {
-                int gomb = Integer.parseInt(pin.charAt(i)+"");
-                jPanel1.getComponent(gomb).setBackground(Color.red);
-            }
-        }else{
+        boolean show = chbMutat.isSelected();
+        Color color = show ? Color.red : Color.LIGHT_GRAY;
+        for (int i = 0; i < pin.length(); i++) {
+            int gomb = Integer.parseInt(pin.charAt(i)+"");
+            jPanel1.getComponent(gomb).setBackground(color);
+        }
+        if (!show) {
             chbMutat.setEnabled(false);
             kattDb = 0;
-            for (int i = 0; i < pin.length(); i++) {
-                int gomb = Integer.parseInt(pin.charAt(i)+"");
-                jPanel1.getComponent(gomb).setBackground(Color.LIGHT_GRAY);
-            }
         }
     }//GEN-LAST:event_chbMutatActionPerformed
 
