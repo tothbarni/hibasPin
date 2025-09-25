@@ -3,6 +3,11 @@ package main;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
@@ -114,18 +119,17 @@ public class PinBekero extends javax.swing.JFrame {
         for (int i = 0; i < jPanel1.getComponentCount(); i++) {
             JButton btn = (JButton) jPanel1.getComponent(i);
             btn.setText(i + "");
-            btn.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    if (kattDb < 4) {
-                        kattDb++;
-                        pin += e.getActionCommand();
-                        if (kattDb == 4) {
-                            chbMutat.setEnabled(true);
-                            JOptionPane.showMessageDialog(rootPane, "Pin mentve!");
+            btn.addActionListener((ActionEvent e) -> {
+                if (kattDb < 4) {
+                    kattDb++;
+                    pin += e.getActionCommand();
+                    if (kattDb == 4) {
+                        chbMutat.setEnabled(true);
+                        JOptionPane.showMessageDialog(rootPane, "Pin mentve!");
+                        if (!mentve) {
+                            savePinToFile(pin);
                         }
                     }
-                    
                 }
             });
         }
@@ -143,6 +147,16 @@ public class PinBekero extends javax.swing.JFrame {
             kattDb = 0;
         }
     }//GEN-LAST:event_chbMutatActionPerformed
+
+    private void savePinToFile(String value) {
+        try {
+            Path path = Paths.get("pin.txt");
+            Files.write(path, value.getBytes(StandardCharsets.UTF_8));
+            mentve = true;
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(rootPane, "Hiba a mentésnél: " + ex.getMessage());
+        }
+    }
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
